@@ -1,0 +1,115 @@
+# Identify errors in configuration
+config_diagnostics = 1
+
+[root_cert]
+
+# Use the distinguished name values given below
+prompt = no
+
+#
+# These cross-reference the sections below
+#
+
+distinguished_name = root_distinguished_name
+x509_extensions = root_extensions
+
+
+
+
+[root_distinguished_name]
+
+#
+# man openssl-req
+#
+
+countryName             = US
+stateOrProvinceName     = DC
+localityName            = Washington
+
+organizationName        = Home Network
+organizationalUnitName  = Root
+commonName              = root.certs.home.arpa
+
+
+[root_extensions]
+
+#
+# man x509v3_config
+#
+
+# Indicate that this certificate is for the root CA, and that there may be one
+# intermediate CA
+basicConstraints = critical, CA:true, pathlen:1
+
+# This complies with RFC 5280 section 4.2.1.2
+subjectKeyIdentifier = hash
+
+# This certificate is self-signed so this parameter is not needed
+authorityKeyIdentifier = none
+
+# This key can only be used for signing other certificates
+keyUsage = critical, keyCertSign, cRLSign
+
+nameConstraints = critical, permitted;DNS:.home.arpa
+
+
+
+
+[intermediate_cert]
+
+# Use the distinguished name values given below
+prompt = no
+
+#
+# These cross-reference the sections below
+#
+
+distinguished_name = intermediate_distinguished_name
+x509_extensions = intermediate_extensions
+
+
+
+
+[intermediate_distinguished_name]
+
+countryName             = US
+stateOrProvinceName     = DC
+localityName            = Washington
+organizationName        = Home Network
+organizationalUnitName  = Intermediate
+commonName              = intermediate.certs.home.arpa
+
+
+
+[intermediate_extensions]
+
+# This certificate is for an intermediate CA
+basicConstraints = critical, CA:true, pathlen:0
+
+# This complies with RFC 5280 section 4.2.1.2
+subjectKeyIdentifier = hash
+
+# This key can only be used for signing other certificates
+keyUsage = critical, keyCertSign, cRLSign
+
+authorityKeyIdentifier = keyid:always, issuer
+
+nameConstraints = critical, permitted;DNS:.home.arpa
+
+
+[client_cert]
+
+prompt = no
+x509_extensions = client_extensions
+distinguished_name = client_dn
+
+[client_dn]
+CN = none
+
+[client_extensions]
+
+basicConstraints        = critical, CA:false
+authorityKeyIdentifier  = keyid: always, issuer
+keyUsage                = critical, digitalSignature, keyEncipherment
+extendedKeyUsage        = serverAuth, clientAuth
+
