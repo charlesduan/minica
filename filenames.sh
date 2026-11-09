@@ -1,7 +1,7 @@
 #
 # The openssl program
 #
-OPENSSL=/opt/homebrew/bin/openssl
+OPENSSL=openssl
 #
 #
 # Contains parameters for the certificates and requests
@@ -17,5 +17,14 @@ ROOT_CERTIFICATE="ca/root-cert.crt"
 IM_PRIVATE_KEY="ca/im-private.key"
 IM_CERTIFICATE="ca/im-cert.crt"
 
+#
+# File names for certificate logs
+#
+CERT_LOG="ca/certs-issued.log"
+CERTS="ca/certs"
 
+#
+# Suffix for domain names
+#
+DOMAIN_SUFFIX=".home.arpa"
 
