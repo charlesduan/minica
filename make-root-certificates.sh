@@ -1,6 +1,18 @@
 #!/bin/sh
 
+#
+# Constructs the root and intermediate certificates for a domain.
+#
 . "./filenames.sh"
+
+#
+# Test that the log is writable
+#
+touch "$CERT_LOG"
+if ! [ -f "$CERT_LOG" -a -w "$CERT_LOG" ] ; then
+    echo "Log file $CERT_LOG not writable"
+    exit 1;
+fi
 
 ########################################################################
 #

@@ -1,4 +1,6 @@
 *.key
 *.crt
+*.swo
+*.swp
 ca
 filenames.sh

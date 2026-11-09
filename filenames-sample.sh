@@ -9,6 +9,13 @@ OPENSSL=openssl
 CA_CONFIG_FILE="./ca-config.cnf"
 
 #
+# Ensure that the CA directory exists.
+#
+if ! [ -d "ca" ] ; then
+    mkdir "ca" || exit 1
+fi
+
+#
 # File names for CA keys
 #
 ROOT_PRIVATE_KEY="ca/root-private.key"
