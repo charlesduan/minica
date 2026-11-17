@@ -8,11 +8,15 @@
 . "./filenames.sh"
 
 #
-# Test that the log is writable
+# Initial tests
 #
 touch "$CERT_LOG"
 if ! [ -f "$CERT_LOG" -a -w "$CERT_LOG" ] ; then
     echo "Log file $CERT_LOG not writable"
+    exit 1;
+fi
+if ! [ -d "$EXPORT_DIR" ] ; then
+    echo "No export dir $EXPORT_DIR"
     exit 1;
 fi
 
@@ -58,7 +62,7 @@ fi
 echo "Certificate domain is $DOMAIN"
 
 PRIVATE_KEY="$EXPORT_DIR/$PREFIX-private.key"
-CERTIFICATE="$EXPORT_DIR/$PREFIX-cert.crt"
+CERT_FILE="$PREFIX-cert.crt"
 DATE="`date -Iminutes`"
 
 ########################################################################
@@ -88,7 +92,9 @@ echo "$DATE - created private key $PRIVATE_KEY" >> "$CERT_LOG"
 ########################################################################
 
 echo
-echo "Generating certificate $CERTIFICATE..."
+echo "Generating certificate $CERT_FILE..."
+mkdir -p "$CERTS"
+CERTIFICATE="$CERTS/`date +%s`-$CERT_FILE"
 $OPENSSL req -x509 -new \
     -key "$PRIVATE_KEY" -sha256 -days 36500 \
     -CA "$IM_CERTIFICATE" -CAkey "$IM_PRIVATE_KEY" \
@@ -103,8 +109,8 @@ $OPENSSL verify -trusted "$ROOT_CERTIFICATE" -untrusted "$IM_CERTIFICATE" \
     "$CERTIFICATE"
 
 echo "Saving to log..."
-mkdir -p "$CERTS"
-cp "$CERTIFICATE" "$CERTS/`date +%s`-$CERTIFICATE"
-echo "$DATE - wrote certificate $CERTIFICATE for $DOMAIN" >> "$CERT_LOG"
+echo "$DATE - wrote certificate $CERT_FILE for $DOMAIN" >> "$CERT_LOG"
 
-echo "Done. Inspect with 'openssl x509 -in $CERTIFICATE -text -noout'"
+EXPORT_CERT="$EXPORT_DIR/$CERT_FILE"
+cp "$CERTIFICATE" "$EXPORT_CERT"
+echo "Done. Inspect with 'openssl x509 -in $EXPORT_CERT -text -noout'"

@@ -6,11 +6,15 @@
 . "./filenames.sh"
 
 #
-# Test that the log is writable
+# Initial tests
 #
 touch "$CERT_LOG"
 if ! [ -f "$CERT_LOG" -a -w "$CERT_LOG" ] ; then
     echo "Log file $CERT_LOG not writable"
+    exit 1;
+fi
+if ! [ -d "$EXPORT_DIR" ] ; then
+    echo "No export dir $EXPORT_DIR"
     exit 1;
 fi
 
