@@ -43,7 +43,6 @@ echo "Done. Inspect with 'openssl x509 -in $ROOT_CERTIFICATE -text -noout'"
 
 
 
-
 ########################################################################
 #
 # INTERMEDIATE KEY
@@ -74,4 +73,9 @@ echo "Done. Inspect with 'openssl x509 -in $IM_CERTIFICATE -text -noout'"
 echo
 echo "Verifying intermediate key..."
 $OPENSSL verify -trusted "$ROOT_CERTIFICATE" "$IM_CERTIFICATE"
+
+# Copy the root certificate to the export directory
+cp "$ROOT_CERTIFICATE" "$EXPORT_DIR"
+cp "$IM_CERTIFICATE" "$EXPORT_DIR"
+echo "Certificates copied to $EXPORT_DIR/"
 

@@ -57,8 +57,8 @@ if [ '' = "$DOMAIN" ] ; then
 fi
 echo "Certificate domain is $DOMAIN"
 
-PRIVATE_KEY="$PREFIX-private.key"
-CERTIFICATE="$PREFIX-cert.crt"
+PRIVATE_KEY="$EXPORT_DIR/$PREFIX-private.key"
+CERTIFICATE="$EXPORT_DIR/$PREFIX-cert.crt"
 DATE="`date -Iminutes`"
 
 ########################################################################
@@ -80,6 +80,12 @@ else
     echo "Done."
 fi
 echo "$DATE - created private key $PRIVATE_KEY" >> "$CERT_LOG"
+
+########################################################################
+#
+# CERTIFICATE
+#
+########################################################################
 
 echo
 echo "Generating certificate $CERTIFICATE..."

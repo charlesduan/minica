@@ -2,5 +2,7 @@
 *.crt
 *.swo
 *.swp
+*.csr
 ca
 filenames.sh
+export
